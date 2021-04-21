@@ -15,6 +15,7 @@ public class EvenIterator implements Iterator {
     public boolean hasNext() {
         for (int i = point; i < numbers.length; i++) {
             if (numbers[i] % 2 == 0) {
+                point = i;
                 return true;
             }
         }
@@ -25,9 +26,6 @@ public class EvenIterator implements Iterator {
     public Object next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
-        }
-        while (numbers[point] % 2 != 0) {
-            point++;
         }
         return numbers[point++];
     }
