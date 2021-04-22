@@ -1,6 +1,7 @@
 package ru.job4j.generics;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SimpleArray<T> implements Iterable<T> {
@@ -16,60 +17,42 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        Objects.checkIndex(index, elements.length);
         elements[index++] = model;
     }
 
     public void set(int index, T model) {
-        Objects.checkIndex(index, elements.length);
+        Objects.checkIndex(index, this.index);
         elements[index] = model;
     }
 
     public void remove(int index) {
-        Objects.checkIndex(index, elements.length);
-        Object[] dest = new Object[elements.length - 1];
+        Objects.checkIndex(index, this.index);
         System.arraycopy(elements, index + 1, elements, index, elements.length - index - 1);
-        System.arraycopy(elements, 0, dest, 0, elements.length - 1);
-        elements = dest;
+        this.index--;
     }
 
     public T get(int index) {
+        Objects.checkIndex(index, this.index);
         return (T) elements[index];
     }
 
     @Override
     public Iterator<T> iterator() {
-        Iterator<T> itr = new Iterator<>() {
+        return new Iterator<T>() {
+            int point = 0;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return point < elements.length;
             }
 
             @Override
             public T next() {
-                return null;
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return (T) elements[point++];
             }
         };
-        return itr;
-    }
-
-    public static void main(String[] args) {
-        SimpleArray<Object> numbers = new SimpleArray<>(10);
-        numbers.add(1);
-        numbers.add(2);
-        numbers.add(3);
-        numbers.add(4);
-        numbers.add(5);
-        numbers.add(6);
-        numbers.add(7);
-        numbers.add(8);
-        numbers.add(9);
-        numbers.add(10);
-        numbers.set(0, 11);
-        numbers.remove(1);
-        int[] testArray = {1, 2, 3, 4, 5, 6};
-        for (int i = 0; i < 9; i++) {
-            System.out.println(numbers.get(i));
-        }
     }
 }

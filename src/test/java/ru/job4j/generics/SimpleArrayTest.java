@@ -2,6 +2,8 @@ package ru.job4j.generics;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.assertEquals;
 
 public class SimpleArrayTest {
@@ -19,7 +21,7 @@ public class SimpleArrayTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void whenGetIndexOutOfBounds() {
-        SimpleArray<Object> simpleArray = new SimpleArray<>(3);
+        SimpleArray<Object> simpleArray = new SimpleArray<>(4);
         simpleArray.add(1);
         simpleArray.add(2);
         simpleArray.add("Dog");
@@ -46,5 +48,16 @@ public class SimpleArrayTest {
         simpleArray.add(5);
         simpleArray.remove(2);
         assertEquals((Integer)simpleArray.get(2), (Integer)4);
+    }
+
+    @Test
+    public void whenIterateElements() {
+        SimpleArray<String> elements = new SimpleArray<>(3);
+        elements.add("String1");
+        elements.add("String2");
+        elements.add("String3");
+        Iterator itr = elements.iterator();
+        itr.next();
+        assertEquals(itr.next(), "String2");
     }
 }
