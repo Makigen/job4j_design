@@ -6,13 +6,14 @@ import java.util.Objects;
 
 public class SimpleArray<T> implements Iterable<T> {
     private Object[] elements = {};
+    private final int defaultCapacity = 10;
     private int index = 0;
 
     public SimpleArray(int capacity) {
         if (capacity >= 0) {
             this.elements = new Object[capacity];
         } else {
-            throw new IllegalArgumentException("Illegal Capacity: " + capacity);
+            this.elements = new Object[defaultCapacity];
         }
     }
 
