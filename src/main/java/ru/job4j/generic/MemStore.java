@@ -2,7 +2,6 @@ package ru.job4j.generic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
@@ -15,27 +14,38 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        mem.set(findIndexById(id), model);
+        int index = findIndexById(id);
+        if (index == -1) {
+            return false;
+        } else {
+            mem.set(index, model);
+        }
         return true;
     }
 
     @Override
     public boolean delete(String id) {
-        mem.remove(findById(id));
-        return true;
+        int index = findIndexById(id);
+        if (index == -1) {
+            return false;
+        } else {
+            mem.remove(index);
+            return true;
+        }
     }
 
     @Override
     public T findById(String id) {
-        for (T model : mem) {
-            if (model.getId().equals(id)) {
-                return model;
-            }
+        int index = findIndexById(id);
+        if (index == -1) {
+            return null;
+        } else {
+            return mem.get(index);
         }
-        throw new NoSuchElementException();
     }
 
-    public int findIndexById(String id) {
+
+    private int findIndexById(String id) {
         for (int i = 0; i < mem.size(); i++) {
             if (mem.get(i).getId().equals(id)) {
                 return i;
