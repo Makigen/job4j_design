@@ -51,6 +51,15 @@ public class ForwardLinked<T> implements Iterable<T> {
         return value;
     }
 
+    public void addFirst(T value) {
+        Node<T> node = new Node<T>(value, head);
+        if (head != null) {
+            head.next = head;
+        }
+        head = node;
+    }
+
+
     private static class Node<T> {
         T value;
         Node<T> next;
