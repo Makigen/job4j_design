@@ -3,7 +3,8 @@ package ru.job4j.collection;
 import java.util.*;
 
 public class SimpleArray<T> implements Iterable<T> {
-    private Object[] container = {};
+    private final int defaultCapacity = 10;
+    private Object[] container = new Object[defaultCapacity];
     private int size = 0;
     private int modCount = 0;
 
@@ -21,7 +22,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void add(T model) {
         if (size >= container.length) {
-            container = Arrays.copyOf(container, container.length + 1);
+            container = Arrays.copyOf(container, container.length * 2);
         }
         container[size++] = model;
         modCount++;
