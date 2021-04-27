@@ -47,7 +47,7 @@ public class SimpleArrayTest {
         simpleArray.add(4);
         simpleArray.add(5);
         simpleArray.remove(2);
-        assertEquals((Integer)simpleArray.get(2), (Integer)4);
+        assertEquals((Integer) simpleArray.get(2), (Integer) 4);
     }
 
     @Test
