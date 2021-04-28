@@ -28,8 +28,8 @@ public class ForwardLinked<T> implements Iterable<T> {
                 current.next = head;
                 head = current;
                 current = next;
-                return true;
             }
+            return true;
         }
         return false;
     }
