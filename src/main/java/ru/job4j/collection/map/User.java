@@ -22,6 +22,11 @@ public class User {
         return chlidren == user.chlidren && name.equals(user.name) && birthday.equals(user.birthday);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, chlidren, birthday);
+    }
+
     public static void main(String[] args) {
         User user1 = new User("Kirill", 2, new GregorianCalendar(1988, 6, 10));
         User user2 = new User("Kirill", 2, new GregorianCalendar(1988, 6, 10));
