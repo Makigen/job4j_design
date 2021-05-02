@@ -32,8 +32,8 @@ public class User {
     }
 
     public static void main(String[] args) {
-        User user1 = new User("Kirill", 2, new GregorianCalendar(1988, 6, 10));
-        User user2 = new User("Kirill", 2, new GregorianCalendar(1988, 6, 10));
+        User user1 = new User("Kirill", 2, new GregorianCalendar(1988, Calendar.JUNE, 10));
+        User user2 = new User("Kirill", 2, new GregorianCalendar(1988, Calendar.JUNE, 10));
 
         Map<User, Object> map = new HashMap<>();
 
