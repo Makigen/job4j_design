@@ -25,7 +25,7 @@ public class SimpleHashMapTest {
     public void whenNeedToGrow() {
         SimpleHashMap<String, String> map = new SimpleHashMap<>();
         for (int i = 0; i < 50; i++) {
-            map.insert((i*i + "ZY"), "String");
+            map.insert((i * i + "ZY"), "String");
         }
         map.insert("1911", "Grow");
         assertThat(map.get("1911"), is("Grow"));
