@@ -1,9 +1,6 @@
 package ru.job4j.collection;
 
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
     private final int initialCapacity = 16;
@@ -43,7 +40,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     }
 
     private int getIndex(int hash) {
-        return hash % (storage.length - 1);
+        return hash & (storage.length - 1);
     }
 
     private void grow() {
@@ -71,7 +68,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
         int hash = hash(key);
         int index = getIndex(hash);
         Node<K, V> node = (Node<K, V>) storage[index];
-        if (key == node.getKey()) {
+        if (key.equals(node.getKey())) {
             value = node.getValue();
         }
         return value;
@@ -94,6 +91,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             int expectedModCount = modCount;
+            int count = 0;
             int point = 0;
 
             @Override
@@ -101,7 +99,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
                 while (point < storage.length && storage[point] == null) {
                     point++;
                 }
-                return point <= size;
+                return count < size;
             }
 
             @Override
@@ -112,6 +110,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+                count++;
                 return ((Node<K, V>) storage[point++]).getKey();
             }
         };
