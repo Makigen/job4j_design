@@ -4,7 +4,7 @@ import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
     private final int initialCapacity = 16;
-    private Object[] storage = new Object[initialCapacity];
+    private Node<K, V>[] storage = new Node[initialCapacity];
     private int size = 0;
     private int modCount = 0;
 
@@ -44,7 +44,13 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     }
 
     private void grow() {
-        storage = Arrays.copyOf(storage, storage.length * 2);
+        Node<K, V>[] growedUp = new Node[storage.length * 2];
+        for (Node<K, V> node : storage) {
+            if (node != null) {
+                growedUp[getIndex(hash(node.getKey()))] = node;
+            }
+        }
+        storage = growedUp;
         modCount++;
     }
 
@@ -67,9 +73,11 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
         V value = null;
         int hash = hash(key);
         int index = getIndex(hash);
-        Node<K, V> node = (Node<K, V>) storage[index];
-        if (key.equals(node.getKey())) {
-            value = node.getValue();
+        if (storage[index] != null) {
+            Node<K, V> node = (Node<K, V>) storage[index];
+            if (key.equals(node.getKey())) {
+                value = node.getValue();
+            }
         }
         return value;
     }

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class SimpleHashMapTest {
@@ -54,5 +55,12 @@ public class SimpleHashMapTest {
         Iterator<Integer> it = map.iterator();
         map.insert(2, "second");
         it.next();
+    }
+
+    @Test
+    public void whenGetNull() {
+        SimpleHashMap<Integer, String> map = new SimpleHashMap<>();
+        var rsl = map.get(1);
+        assertEquals(rsl, null);
     }
 }
