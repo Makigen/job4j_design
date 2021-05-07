@@ -41,6 +41,16 @@ public class TreeTest {
     }
 
     @Test
+    public void whenAddFalseBecauseParentIsNotPresent() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        tree.add(1, 2);
+        assertThat(
+                tree.add(3, 4),
+                is(false)
+        );
+    }
+
+    @Test
     public void whenAddToChild() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
