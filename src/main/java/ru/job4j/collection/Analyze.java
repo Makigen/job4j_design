@@ -1,25 +1,30 @@
 package ru.job4j.collection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Analyze {
 
     public static Info diff(List<User> previous, List<User> current) {
         Info rsl = new Info();
-        List<Analyze.User> deleted = new ArrayList<>(previous);
-        List<Analyze.User> added = new ArrayList<>(current);
 
-        current.forEach(deleted::remove);
-        previous.forEach(added::remove);
+        Map<Integer, User> currentMap = current.stream().collect(Collectors.toMap(User::getId, User -> User));
 
-        rsl.deleted = deleted.size();
-        rsl.added = added.size();
+        for (User user : previous) {
+            if (!currentMap.containsKey(user.getId())) {
+                rsl.deleted++;
+            }
+        }
 
-        for (User userPrevious : previous) {
-            for (User userCurrent : current) {
-                if (userCurrent.id == userPrevious.id && !userCurrent.name.equals(userPrevious.name)) {
+        for (Map.Entry<Integer, User> entry : currentMap.entrySet()) {
+            if (!previous.contains(entry.getValue())) {
+                rsl.added++;
+            }
+        }
+
+        for (Map.Entry<Integer, User> entry : currentMap.entrySet()) {
+            for (User user : previous) {
+                if (entry.getKey() == user.getId() && !entry.getValue().getName().equals(user.getName())) {
                     rsl.changed++;
                 }
             }
@@ -34,6 +39,14 @@ public class Analyze {
         public User(int id, String name) {
             this.id = id;
             this.name = name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
         }
 
         @Override
