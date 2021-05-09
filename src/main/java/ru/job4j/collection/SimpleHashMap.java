@@ -3,8 +3,8 @@ package ru.job4j.collection;
 import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
-    private final int initialCapacity = 16;
-    private Node<K, V>[] storage = new Node[initialCapacity];
+    private int capacity = 16;
+    private Node<K, V>[] storage = new Node[capacity];
     private int size = 0;
     private int modCount = 0;
 
@@ -40,24 +40,25 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     }
 
     private int getIndex(int hash) {
-        return hash & (storage.length - 1);
+        return hash % capacity;
     }
 
     private void grow() {
-        Node<K, V>[] growedUp = new Node[storage.length * 2];
+        capacity = capacity * 2;
+        Node<K, V>[] grownUp = new Node[capacity];
         for (Node<K, V> node : storage) {
             if (node != null) {
-                growedUp[getIndex(hash(node.getKey()))] = node;
+                grownUp[getIndex(hash(node.getKey()))] = node;
             }
         }
-        storage = growedUp;
+        storage = grownUp;
         modCount++;
     }
 
     public boolean insert(K key, V value) {
         Node<K, V> node = new Node<>(hash(key), key, value);
         int index = getIndex(hash(key));
-        if (size >= storage.length) {
+        if (size >= capacity) {
             grow();
         }
         if (storage[index] == null) {
