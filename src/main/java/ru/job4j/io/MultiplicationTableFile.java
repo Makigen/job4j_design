@@ -10,7 +10,7 @@ public class MultiplicationTableFile {
             for (int j = 0; j < 9; j++) {
                 s.append((i + 1) * (j + 1) + " ");
             }
-            s.append("\n");
+            s.append(System.lineSeparator());
         }
 
         try (FileOutputStream out = new FileOutputStream("multiplication_table.txt")) {
@@ -20,6 +20,3 @@ public class MultiplicationTableFile {
         }
     }
 }
-
-
-
