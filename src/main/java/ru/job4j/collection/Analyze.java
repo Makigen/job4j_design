@@ -22,13 +22,12 @@ public class Analyze {
             }
         }
 
-        for (Map.Entry<Integer, User> entry : currentMap.entrySet()) {
-            for (User user : previous) {
-                if (entry.getKey() == user.getId() && !entry.getValue().getName().equals(user.getName())) {
+        for (User user : previous) {
+            User currentUser = currentMap.get(user.getId());
+            if (currentUser != null && !currentUser.getName().equals(user.getName())) {
                     rsl.changed++;
                 }
             }
-        }
         return rsl;
     }
 
