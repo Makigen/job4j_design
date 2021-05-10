@@ -4,6 +4,7 @@ import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
     private int capacity = 16;
+    private final double LOAD_FACTOR = 0.75;
     private Node<K, V>[] storage = new Node[capacity];
     private int size = 0;
     private int modCount = 0;
@@ -58,7 +59,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     public boolean insert(K key, V value) {
         Node<K, V> node = new Node<>(hash(key), key, value);
         int index = getIndex(hash(key));
-        if (size >= capacity) {
+        if (size >= capacity * LOAD_FACTOR) {
             grow();
         }
         if (storage[index] == null) {
