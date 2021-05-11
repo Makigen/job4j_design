@@ -12,7 +12,7 @@ public class ConfigTest {
         String path = "./data/pair_without_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"),is("Kirill Malikov"));
+        assertThat(config.value("name"), is("Kirill Malikov"));
     }
 
     @Test
@@ -20,7 +20,7 @@ public class ConfigTest {
         String path = "./data/pair_with_comments.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("address"),is("Tallinn"));
+        assertThat(config.value("address"), is("Tallinn"));
     }
 
     @Test(expected = IllegalArgumentException.class)

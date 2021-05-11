@@ -4,6 +4,7 @@ import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
     private int capacity = 16;
+    @SuppressWarnings("checkstyle:MemberName")
     private final double LOAD_FACTOR = 0.75;
     private Node<K, V>[] storage = new Node[capacity];
     private int size = 0;
