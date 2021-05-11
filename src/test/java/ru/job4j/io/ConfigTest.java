@@ -28,6 +28,5 @@ public class ConfigTest {
         String path = "./data/pair_without_value.properties";
         Config config = new Config(path);
         config.load();
-        config.value("name");
     }
 }
