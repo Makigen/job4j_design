@@ -11,23 +11,17 @@ public class Analyze {
         Map<Integer, User> currentMap = current.stream().collect(Collectors.toMap(User::getId, User -> User));
 
         for (User user : previous) {
-            if (!currentMap.containsKey(user.getId())) {
-                rsl.deleted++;
-            }
-        }
-
-        for (Map.Entry<Integer, User> entry : currentMap.entrySet()) {
-            if (!previous.contains(entry.getValue())) {
-                rsl.added++;
-            }
-        }
-
-        for (User user : previous) {
-            User currentUser = currentMap.get(user.getId());
-            if (currentUser != null && !currentUser.getName().equals(user.getName())) {
+            if (currentMap.containsKey(user.getId())) {
+                User currentUser = currentMap.get(user.getId());
+                if (!currentUser.getName().equals(user.getName())) {
                     rsl.changed++;
                 }
+                currentMap.remove(user.getId());
+            } else {
+                rsl.deleted++;
             }
+            rsl.added = currentMap.size();
+        }
         return rsl;
     }
 

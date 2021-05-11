@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 import ru.job4j.collection.Analyze.Info;
@@ -23,7 +24,7 @@ public class AnalyzeTest {
         List<Analyze.User> list2 = Arrays.asList(user1, user2, user3, user4, user5);
 
         Info inf = Analyze.diff(list1, list2);
-        assertEquals(inf.added, 1);
+        assertThat(inf.added, is(1));
     }
 
     @Test
@@ -39,7 +40,7 @@ public class AnalyzeTest {
         List<Analyze.User> list2 = Arrays.asList(user1, user2, user6, user5);
 
         Info inf = Analyze.diff(list1, list2);
-        assertEquals(inf.changed, 2);
+        assertThat(inf.changed, is(2));
     }
 
     @Test
@@ -55,7 +56,7 @@ public class AnalyzeTest {
         List<Analyze.User> list2 = Arrays.asList(user1, user2, user3);
 
         Info inf = Analyze.diff(list1, list2);
-        assertEquals(inf.deleted, 1);
+        assertThat(inf.deleted, is(1));
     }
 
     @Test
@@ -77,6 +78,6 @@ public class AnalyzeTest {
         rsl.changed = 1;
         rsl.deleted = 2;
 
-        assertEquals(inf, rsl);
+        assertThat(inf, is(rsl));
     }
 }
