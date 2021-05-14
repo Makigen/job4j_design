@@ -25,6 +25,10 @@ public class Analysis {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        saveToFile(log, target);
+    }
+
+    private void saveToFile(List<String> log, String target) {
         try (PrintWriter out = new PrintWriter(
                 new BufferedOutputStream(
                         new FileOutputStream(target)))) {
