@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class Analysis {
     public void unavailable(String source, String target) {
@@ -16,7 +17,9 @@ public class Analysis {
                     begin = line.split(" ")[1];
                 }
                 if ((line.startsWith("200") || line.startsWith("300")) && !begin.equals("")) {
-                    time = begin + ";" + line.split(" ")[1] + ";";
+                    StringJoiner stringJoiner = new StringJoiner(";", "", ";");
+                    time = stringJoiner.add(begin).toString();
+                    time = stringJoiner.add(line.split(" ")[1]).toString();
                     log.add(time);
                     begin = "";
                 }
