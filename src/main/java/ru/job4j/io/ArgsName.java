@@ -17,10 +17,11 @@ public class ArgsName {
         }
         for (String s : args) {
             String key = s.substring(s.indexOf("-") + 1, s.indexOf("="));
-            if (s.split("=").length < 2) {
+            String[] split = s.split("=");
+            if (split.length < 2) {
                 throw new IllegalArgumentException();
             }
-            String value = s.split("=")[1];
+            String value = split[1];
             values.put(key, value);
         }
     }
