@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -22,22 +23,30 @@ public class ConsoleChat {
 
     public void run() {
         try {
+            List<String> log = new ArrayList<>();
+            List<String> listOfAnswers = botAnswer();
+            String chatAnswer = "";
+            Random rand = new Random();
             PrintStream fileOut = new PrintStream(path);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Chat Bot: Welcome to chat! ");
-            fileOut.println("Chat Bot: Welcome to chat! ");
+            log.add("Chat Bot: Welcome to chat! ");
             String line = scanner.nextLine();
-            fileOut.println("User: " + line);
+            log.add("User: " + line);
             while (!line.equals(OUT)) {
+                if (listOfAnswers.size() > 0) {
+                    int randomIndex = rand.nextInt(listOfAnswers.size() - 1);
+                    chatAnswer = listOfAnswers.get(randomIndex);
+                }
                 System.out.println("User: " + line);
                 if (!pause(line)) {
-                    String chatAnswer = botAnswer();
-                    fileOut.println("Chat: " + chatAnswer);
+                    log.add("Chat: " + chatAnswer);
                     System.out.println("Chat: " + chatAnswer);
                 }
                 line = scanner.nextLine();
-                fileOut.println("User: " + line);
+                log.add("User: " + line);
             }
+            log.forEach(fileOut::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,15 +64,9 @@ public class ConsoleChat {
         return pause;
     }
 
-    private String botAnswer() throws IOException {
-        String line = "";
-        List<String> array = Files.readAllLines(Path.of(botAnswers));
-        Random rand = new Random();
-        if (array.size() > 0) {
-            int randomIndex = rand.nextInt(array.size() - 1);
-            line = array.get(randomIndex);
-        }
-        return line;
+    private List<String> botAnswer() throws IOException {
+        List<String> listOfAnswers = Files.readAllLines(Path.of(botAnswers));
+        return listOfAnswers;
     }
 
     public static void main(String[] args) {
