@@ -16,10 +16,11 @@ public class EchoServer {
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
                         if (str.contains("Bye")) {
+                            out.write("HTTP/1.1 200 OK\r\n".getBytes());
                             server.close();
                         }
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
+                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
                 }
             }
         }
