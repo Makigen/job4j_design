@@ -64,8 +64,7 @@ public class ConsoleChat {
     }
 
     private List<String> botAnswer() throws IOException {
-        List<String> listOfAnswers = Files.readAllLines(Path.of(botAnswers));
-        return listOfAnswers;
+        return Files.readAllLines(Path.of(botAnswers));
     }
 
     private void writeListToFile(List<String> log) {
