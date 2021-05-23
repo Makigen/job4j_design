@@ -27,7 +27,6 @@ public class ConsoleChat {
             List<String> listOfAnswers = botAnswer();
             String chatAnswer = "";
             Random rand = new Random();
-            PrintStream fileOut = new PrintStream(path);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Chat Bot: Welcome to chat! ");
             log.add("Chat Bot: Welcome to chat! ");
@@ -46,7 +45,7 @@ public class ConsoleChat {
                 line = scanner.nextLine();
                 log.add("User: " + line);
             }
-            log.forEach(fileOut::println);
+            writeListToFile(log);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,6 +66,15 @@ public class ConsoleChat {
     private List<String> botAnswer() throws IOException {
         List<String> listOfAnswers = Files.readAllLines(Path.of(botAnswers));
         return listOfAnswers;
+    }
+
+    private void writeListToFile(List<String> log) {
+        try {
+            PrintStream fileOut = new PrintStream(path);
+            log.forEach(fileOut::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
