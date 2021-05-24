@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<car transmission="true" year="2021">
+    <engine vincode="WVWZZZ3CZLE028910"/>
+    <equipments>
+        <equipment>AC</equipment>
+        <equipment>ABS</equipment>
+        <equipment>Airbag</equipment>
+    </equipments>
+</car>
