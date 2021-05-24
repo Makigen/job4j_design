@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConsoleChat {
     private final String path;
@@ -22,33 +24,29 @@ public class ConsoleChat {
     }
 
     public void run() {
-        try {
-            List<String> log = new ArrayList<>();
-            List<String> listOfAnswers = botAnswer();
-            String chatAnswer = "";
-            Random rand = new Random();
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Chat Bot: Welcome to chat! ");
-            log.add("Chat Bot: Welcome to chat! ");
-            String line = scanner.nextLine();
-            log.add("User: " + line);
-            while (!line.equals(OUT)) {
-                if (listOfAnswers.size() > 0) {
-                    int randomIndex = rand.nextInt(listOfAnswers.size() - 1);
-                    chatAnswer = listOfAnswers.get(randomIndex);
-                }
-                System.out.println("User: " + line);
-                if (!pause(line)) {
-                    log.add("Chat: " + chatAnswer);
-                    System.out.println("Chat: " + chatAnswer);
-                }
-                line = scanner.nextLine();
-                log.add("User: " + line);
+        List<String> log = new ArrayList<>();
+        List<String> listOfAnswers = botAnswer();
+        String chatAnswer = "";
+        Random rand = new Random();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Chat Bot: Welcome to chat! ");
+        log.add("Chat Bot: Welcome to chat! ");
+        String line = scanner.nextLine();
+        log.add("User: " + line);
+        while (!line.equals(OUT)) {
+            if (listOfAnswers.size() > 0) {
+                int randomIndex = rand.nextInt(listOfAnswers.size() - 1);
+                chatAnswer = listOfAnswers.get(randomIndex);
             }
-            writeListToFile(log);
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("User: " + line);
+            if (!pause(line)) {
+                log.add("Chat: " + chatAnswer);
+                System.out.println("Chat: " + chatAnswer);
+            }
+            line = scanner.nextLine();
+            log.add("User: " + line);
         }
+        writeListToFile(log);
     }
 
     private boolean pause(String line) {
@@ -63,13 +61,18 @@ public class ConsoleChat {
         return pause;
     }
 
-    private List<String> botAnswer() throws IOException {
-        return Files.readAllLines(Path.of(botAnswers));
+    private List<String> botAnswer() {
+        List<String> listOfAnswers = null;
+        try (Stream<String> lines = Files.lines(Path.of(botAnswers))) {
+            listOfAnswers = lines.collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listOfAnswers;
     }
 
     private void writeListToFile(List<String> log) {
-        try {
-            PrintStream fileOut = new PrintStream(path);
+        try (PrintStream fileOut = new PrintStream(path)) {
             log.forEach(fileOut::println);
         } catch (IOException e) {
             e.printStackTrace();
