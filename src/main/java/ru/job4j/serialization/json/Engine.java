@@ -7,6 +7,10 @@ public class Engine {
         this.vincode = vincode;
     }
 
+    public String getVincode() {
+        return vincode;
+    }
+
     @Override
     public String toString() {
         return "Engine{"
