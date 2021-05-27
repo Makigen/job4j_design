@@ -9,26 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class Find {
 
     public static void main(String[] args) throws IOException {
-        Predicate<Path> condition;
         ArgsName jvm = ArgsName.of(args);
         Path start = Paths.get(jvm.get("d"));
-        switch (jvm.get("t")) {
-            case "mask":
-                condition = p -> p.toFile().getName().matches(maskToRegex(jvm.get("n")));
-                break;
-            case "regex":
-                condition = p -> p.toFile().getName().matches(jvm.get("n"));
-                break;
-            default:
-                condition = p -> p.toFile().getName().equals(jvm.get("n"));
-                break;
-        }
+        Predicate<Path> condition = getSearchType(jvm.get("t"), jvm.get("n"));
         List<String> log = new ArrayList<>();
         search(start, condition).forEach(p -> log.add(p.toString()));
         log.forEach(System.out::println);
@@ -129,5 +120,21 @@ public class Find {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private static Predicate<Path> getSearchType(String t, String n) {
+        Predicate<Path> condition;
+        switch (t) {
+            case "mask":
+                condition = p -> Pattern.compile(maskToRegex(n)).matcher(p.toFile().getName()).find();
+                break;
+            case "regex":
+                condition = p -> Pattern.compile(n).matcher(p.toFile().getName()).find();
+                break;
+            default:
+                condition = p -> p.toFile().getName().equals(n);
+                break;
+        }
+        return condition;
     }
 }
