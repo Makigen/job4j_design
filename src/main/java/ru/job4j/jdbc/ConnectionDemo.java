@@ -14,8 +14,9 @@ public class ConnectionDemo {
         Properties prs = new Properties();
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            InputStream is = classloader.getResourceAsStream("app.properties");
-            prs.load(is);
+            try (InputStream is = classloader.getResourceAsStream("app.properties")) {
+                prs.load(is);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
