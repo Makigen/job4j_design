@@ -22,7 +22,10 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            rd.lines().forEach(line -> users.add(new User(line.split(";", 2)[0], line.split(";", 2)[1])));
+            rd.lines().forEach(line -> {
+                String[] array = line.split(";", 2);
+                users.add(new User(array[0], array[1]));
+            });
         }
         return users;
     }
